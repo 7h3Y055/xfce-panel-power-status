@@ -1,0 +1,52 @@
+#!/bin/bash
+
+
+Source="Source:"
+Bat0="Bat0:"
+Bat1="Bat1:"
+Mode="Mode:"
+
+
+AC="🔌"
+BAT="🔋"
+not_charging="🔋❌"
+charging="🔋⚡"
+
+
+echo -n "$Source "
+
+if [[ $(cat /sys/class/power_supply/AC/online) -eq '1' ]];then
+	echo -n $AC
+else
+	echo -n $BAT
+fi
+
+
+if [[ $(head -c 1 /sys/class/power_supply/BAT0/status  2>&1 ) != "head:"* ]];then
+	echo -n " | $Bat0 "
+	if [[ $(cat /sys/class/power_supply/BAT0/status) = "Not charging" ]];then
+		echo -n $not_charging
+	else
+		echo -n $charging
+	fi
+fi
+
+
+if [[ $(head -c 1 /sys/class/power_supply/BAT1/status  2>&1 ) != "head:"* ]];then
+	echo -n " | $Bat1 "
+	if [[ $(cat /sys/class/power_supply/BAT1/status) = "Not charging" ]];then
+		echo -n $not_charging
+	else
+		echo -n $charging
+	fi
+fi
+
+echo -n " | $Mode "
+
+if [[ $(cpupower frequency-info | awk '/The governor/{print $3}' | tr -d '"') = "powersave" ]];then
+	echo -n "🌱"
+else
+	echo -n "🔥"
+fi
+
+echo
