@@ -96,6 +96,3 @@ Simply change the values of these variables to your preferred emojis and save th
 Feel free to open issues or submit pull requests for improvements!
 
 ---
-
-## License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
